@@ -1,0 +1,568 @@
+USE MASTER
+
+CREATE LOGIN dbadmin1 WITH PASSWORD = 'adminiku23';
+GRANT ALTER ANY LOGIN TO dbadmin1 WITH GRANT OPTION
+
+CREATE DATABASE BLOG
+
+
+
+USE BLOG
+
+
+--DROP DATABASE BLOG;
+
+
+
+---------------------
+--BLOGDAKİ POSTLARIN KATEGORİSİ , KATEGORİADI ÖRNEK C#, C++, VERİ YAPILARI, ALGORİTMA
+---------------------
+
+CREATE TABLE [dbo].[Kategori](
+	[KategoriID] [int] NOT NULL PRIMARY KEY,
+	[KategoriAdi] [nchar](30) NOT NULL,
+	[PostSayisi] [int] NOT NULL,
+)
+
+INSERT INTO [dbo].[Kategori] ([KategoriID],[KategoriAdi],[PostSayisi] )
+VALUES(1,'Deneme1',7)
+go
+INSERT INTO [dbo].[Kategori] ([KategoriID],[KategoriAdi],[PostSayisi] )
+VALUES(2,'Csharp',2)
+go
+INSERT INTO [dbo].[Kategori] ([KategoriID],[KategoriAdi],[PostSayisi] )
+VALUES(3,'Phyton',5)
+go
+INSERT INTO [dbo].[Kategori] ([KategoriID],[KategoriAdi],[PostSayisi] )
+VALUES(4,'MsSql',4)
+go
+INSERT INTO [dbo].[Kategori] ([KategoriID],[KategoriAdi],[PostSayisi] )
+VALUES(5,'C',9)
+go
+
+
+---------------------
+--BLOG YAZARLARININ BİLGİLERİ
+---------------------
+CREATE TABLE [dbo].[Hakkinda](
+	[yazarID] [int] NOT NULL PRIMARY KEY,
+	[Fotograf_path] [nchar](250) NULL,
+	[yazar_isim] [nchar](30) NOT NULL,
+	[yas] [int] NOT NULL,
+	[info] [nchar](800) NOT NULL,
+)
+INSERT INTO  [dbo].[Hakkinda]([yazarID],[Fotograf_path],[yazar_isim],[yas],[info] )
+VALUES(1,'img_01','Kadir',22,'Merhaba Adım Kadir İkü de Bilgisayar Mühendisliği okuyorum ve bu blogtaki amacım;eğitim sürecimde edindiğim bilgileri
+paylaşmak ve insanlarla etkileşim halinde olmak için')
+go
+INSERT INTO  [dbo].[Hakkinda]([yazarID],[Fotograf_path],[yazar_isim],[yas],[info] )
+VALUES(2,'img_02','Muhammed',21,'Merhaba Adım Muhammed İkü de Bilgisayar Mühendisliği okuyorum.Aynı zamanda iyi gitar çalabiliyorum ve 
+yeni bir piyano öğrencisiyim.
+Müzikal yeteneğim dışında hakim olduğum algoritma mantığıyla yeni insanlara yol gösterici olmayı istiyorum')
+go
+
+---------------------
+--BLOG'DA PAYLAŞILAN POSTLARIN VERİLERİ. 
+---------------------
+CREATE TABLE [dbo].[Post](
+	[MakaleID] [int] NOT NULL PRIMARY KEY,
+	[YazarID] [int] NOT NULL,
+	[Goruntulenme] int NOT NULL,
+	[Baslik] [nchar](30) NOT NULL,
+	[Foto] [nchar](30) NULL,
+	[Icerik] [nvarchar](3500) NOT NULL,
+	[Tarih] [datetime] NOT NULL,
+	[KategoriID] [int] FOREIGN KEY REFERENCES [dbo].[Kategori](KategoriID),
+	FOREIGN KEY (YazarID) REFERENCES [dbo].[Hakkinda]([yazarID]),
+	)
+	INSERT INTO  [dbo].[Post]([MakaleID],[YazarID],[Goruntulenme],[Baslik],[Foto],[Icerik],[Tarih],[KategoriID] )
+VALUES(1,1,255,'Deneme konumuza ilk adım','img_deneme','Deneme deneme deneme123 DENEMEEE deneme_deneme123deneme??','2019-01-26',1)
+go
+INSERT INTO  [dbo].[Post]([MakaleID],[YazarID],[Goruntulenme],[Baslik],[Foto],[Icerik],[Tarih],[KategoriID] )
+VALUES(2,1,2155,'csharp okul eğitimi','img_csarp','C#; Microsoft tarafından .NET Teknolojisi için geliştirilen modern bir programlama dilidir. Sözdizimi C-like (C benzeri) bir deneyim sunar.
+Microsoft tarafından geliştirilmiş olsa da ECMA ve ISO standartları altına alınmıştır.[1][2]
+C programlama dilinde bir tam sayı değişkeni 1 artırmak için değişkenden sonra "++" eki kullanılır. C++ dilinin adı, C diliyle Nesne Yönelimli Programlama yapabilme olanağı (C with Classes) için eklentiler sağladığı için "C++" şeklindedir. Benzer şekilde C++ diline yeni eklentiler yapılarak ((C++)++) bir adım daha da ileriye götürülmüş ve tamamen nesneye yönelik tasarlanmış C# dilinin isimlendirilmesinde,
++ karakterlerinin birbirlerine yakınlaşmış hali ve bir melodi anahtarı olan C# Major kullanılmıştır.[3]','2018-03-16',2)
+go
+
+	INSERT INTO  [dbo].[Post]([MakaleID],[YazarID],[Goruntulenme],[Baslik],[Foto],[Icerik],[Tarih],[KategoriID] )
+VALUES(3,1,30456,'Gelecekte Phyton','img_phyton','Python 1980lerin sonunda ABC programlama diline alternatif olarak tasarlanmıştı. Python 2.0, ilk kez 2000 yılında yayınlandı.
+2008de yayınlanan Python 3.0, dilin önceki versiyonuyla tam uyumlu değildir ve Python 2.xte yazılan kodların Python 3.xte çalışması için değiştirilmesi
+gerekmektedir. Python 2 versiyonun resmi geliştirilme süreci, dilin son sürümü olan Python 2.7.x serisi versiyonların ardından 1 Ocak 2020 itibarıyla resmi 
+olarak sona erdi.Python 2.x geliştirilme desteğinin sona ermesinin ardından, Python dilinin 3.5.x ve sonraki sürümlerinin geliştirilmesi devam 
+etmektedir.',2019-01-26,3)
+go
+
+INSERT INTO  [dbo].[Post]([MakaleID],[YazarID],[Goruntulenme],[Baslik],[Foto],[Icerik],[Tarih],[KategoriID] )
+VALUES(4,2,11793,'MsSql ile sorgu','img_mssql','Versiyon 7.0dan önce "kod tabanı" Sybase SQL Server tarafından Microsofta satıldı, ve bu Microsoftun kurumsal seviyede veritabanı pazarına girişi oldu.
+Sybase SQL Server 3.0 ile esasen aynı olan ilk versiyon, SQL Server 1.0ı yaratmak ve pazarlamak adına Microsoft, Sybase ve Ashton-Tate ile takım oluşturdu.
+1992de Microsoft SQL Server 4.2 sevkedildi. Daha sonra Windows NT 3.1 ile aynı zamanda Microsoft SQL Server 4.21 piyasaya sunuldu. Microsoft SQL Server 6.0 Windows NT için dizayn edilmiş ilk versiyon olmasıyla birlikte Sybaseden talimat alınmaksızın piyasaya çıkartıldı.
+SQL Server 7.0, miras Sybase kodu ile yazılan bir "rewrite" sürümü oldu, ve yerine SQL Server 2000 çıkartıldı. SQL Server 2000, IA-64 mimarisinden farklı olarak yazılan ilk sürüm oldu.
+SQL Server 2000 sürümünden 10 yıl sonra performansta artışlar görüldü, IDE araçlarını ve tamamlayıcı başka sistemleri içeren SQL Server 2005 piyasaya sunuldu.'
+,'2020-07-26',4)
+go
+
+INSERT INTO  [dbo].[Post]([MakaleID],[YazarID],[Goruntulenme],[Baslik],[Foto],[Icerik],[Tarih],[KategoriID] )
+VALUES(5,2,17162,'C dili ve önemi','img_c','Bell Laboratuvarlarından Bjarne Stroustrup tarafından 1979 yılından itibaren geliştirilmeye başlanmış,
+Cyi kapsayan ve çok paradigmalı, yaygın olarak kullanılan, genel amaçlı bir programlama dilidir. İlk olarak C With Classes (Sınıflarla C)
+olarak adlandırılmış, 1983 yılında ismi C++olarak değiştirilmiştir.','2021-01-26',5)
+go
+
+
+
+
+
+---------------------
+--POSTLARA GELEN YORUMLARIN BİLGİLERİ, YORUMU YAZAN KİŞİ, MAİL GELEN LİKE VS
+---------------------
+
+CREATE TABLE [dbo].[Yorum](
+	[YorumID] [int] NOT NULL,
+	[YazarAdi] [nchar](15) NOT NULL,
+	[YazarMail] [nchar](15) NOT NULL,
+	[Tarih] [datetime] NOT NULL,
+	[YorumPost] [nchar](300) NOT NULL,
+	[YorumLike] [int] NOT NULL,
+	FOREIGN KEY (YorumID) REFERENCES [dbo].[Post]  ([MakaleID]),
+)
+INSERT INTO [dbo].[Yorum] ([YorumID],[YazarAdi],[YazarMail],[Tarih],[YorumPost],[YorumLike])
+VALUES(2,'Yorumcu1','y1@hotmail.com',01-01-2015,'Yazılarınız çok bilgilendirici çok yardımcı oldu',5)
+go
+INSERT INTO [dbo].[Yorum] ([YorumID],[YazarAdi],[YazarMail],[Tarih],[YorumPost],[YorumLike])
+VALUES(5,'Yorumcu1','y1@hotmail.com',01-07-2015,'C dilinin basit bir şekilde tanıttığınız için teşekkürler',33)
+go
+INSERT INTO [dbo].[Yorum] ([YorumID],[YazarAdi],[YazarMail],[Tarih],[YorumPost],[YorumLike])
+VALUES(5,'Yorumcu2','y2@hotmail.com',01-08-2015,'C diline hakim olmadığınız belli oluyor çok basit ve sığ bilgiler.Biraz araştırmanızı öneririm',46)
+go
+INSERT INTO [dbo].[Yorum] ([YorumID],[YazarAdi],[YazarMail],[Tarih],[YorumPost],[YorumLike])
+VALUES(4,'Yorumcu3','y3@hotmail.com',08-08-2019,'Peki queryde sildiğim table ı arayüz kullanarak neden silemiyorum?',125)
+go
+
+
+
+---------------------
+-- BLOG YAZARLARININ VE WEBSİTESİNİN KENDİ SOSYAL MEDYA HESAPLARI, (HESAPLARIN URL'LERİNİN DEĞİŞME İHTİMALİNE KARŞI AYRI TABLE'DE TUTTUK)
+---------------------
+CREATE TABLE [dbo].[sosyalMedya](
+	[yazar] int NOT NULL PRIMARY KEY,
+	[facebook] [nchar](50) NULL,
+	[instagram] [nchar](50) NULL,
+	[twitter] [nchar](50) NULL,
+	[linkedin] [nchar](50) NULL
+	FOREIGN KEY (yazar) REFERENCES [dbo].[Hakkinda]([yazarID]),
+)
+INSERT INTO [dbo].[sosyalMedya] ([yazar],[facebook],[instagram],[twitter],[linkedin])
+VALUES(1,'yazar1@facebook.com','yazar1@instagram.com','yazar1@twitter.com','yazar1@linkedin.com')
+go
+INSERT INTO [dbo].[sosyalMedya] ([yazar],[facebook],[instagram],[twitter],[linkedin])
+VALUES(2,'yazar2@facebook.com','yazar2@instagram.com','yazar2@twitter.com','yazar2@linkedin.com')
+go
+
+
+
+
+
+---------------------
+--İLETİŞİM KURULMAK İSTENEN BLOG YAZARLARININ İLETİŞİM BİLGİLERİ, SOSYAL MEDYA HESAPLARI
+--VE GÖNDERİLMEK İSTENEN MESAJ İÇİN BİR İLETİŞİM KUTUSU
+---------------------
+
+CREATE TABLE [dbo].[Iletisim]
+(
+	[IletisimID] [int] NOT NULL PRIMARY KEY,
+	[Yazar_ID] [int] NOT NULL,
+	[Yazar_Mail] [nchar](30) NOT NULL,
+	[sosyal_medya] [int] NOT NULL,
+	[tarih] [datetime] NOT NULL,
+	[mesaj] [nchar](500) NOT NULL,
+	FOREIGN KEY (Yazar_ID) REFERENCES [dbo].[Hakkinda]([yazarID]),
+	FOREIGN KEY (sosyal_medya) REFERENCES [dbo].[Hakkinda]([yazarID])
+)
+INSERT INTO [dbo].[Iletisim] ([IletisimID],[Yazar_ID],[Yazar_Mail],[sosyal_medya],[tarih],[mesaj])
+VALUES(1,1,'yazar1@hotmail.com',1,GETDATE(),'Özel ders veriyor musunuz acaba?' )
+go
+INSERT INTO [dbo].[Iletisim] ([IletisimID],[Yazar_ID],[Yazar_Mail],[sosyal_medya],[tarih],[mesaj])
+VALUES(2,1,'yazar1@hotmail.com',1,GETDATE(),'Blog aktif mi? Uzun süredir post göndermediniz,derslerim için yardımcı oluyordunuz')
+go
+INSERT INTO [dbo].[Iletisim] ([IletisimID],[Yazar_ID],[Yazar_Mail],[sosyal_medya],[tarih],[mesaj])
+VALUES(3,2,'yazar2@hotmail.com',2,GETDATE(),'Blog sayfanız için yazar alımı düşünüyor musunuz? Birikimimi sizin arqacılığınızla insanlarla
+paylaşmayı çok isterim')
+go
+
+
+
+
+
+
+
+
+
+
+
+---------------------
+--BLOG'UN YÖNETİM PANELİ BİLGİLERİ
+---------------------
+CREATE TABLE [dbo].[admin](
+	[adminID] [int] NOT NULL PRIMARY KEY,
+	[sifre] [nchar](20) NOT NULL,
+	[admin_mail] [nchar](30) NOT NULL
+)
+
+INSERT INTO [dbo].[admin] ([adminID],[sifre],[admin_mail] )
+VALUES(1,'admin1_şifre','admin_1@gmail.com')
+go
+
+
+
+
+---------------------
+--BLOĞA VERİLEN REKLAMLARIN VERİLERİ, SİTE_KONUM = SİTEDEKİ POZİSYONU (ÜST, POP-UP, KENAR)
+---------------------
+CREATE TABLE [dbo].[reklam](
+	[reklamID] [int] NOT NULL PRIMARY KEY,
+	[sirket] [nchar](20) NOT NULL,
+	[gosterim_suresi] int NOT NULL,
+	[site_konum] [nchar](10) NOT NULL
+)
+INSERT INTO [dbo].[reklam]([reklamID],[sirket],[gosterim_suresi],[site_konum])
+VALUES(1,'şirketA',4,'top-page')
+go
+INSERT INTO [dbo].[reklam]([reklamID],[sirket],[gosterim_suresi],[site_konum])
+VALUES(2,'şirketB',14,'pop-up')
+go
+INSERT INTO [dbo].[reklam]([reklamID],[sirket],[gosterim_suresi],[site_konum])
+VALUES(3,'şirketC',14,'leftcorner')
+go
+
+
+
+
+
+
+
+---------------------
+--MELEK YATIRIMCILARIN, BAĞIŞLARININ TUTULDUĞU TABLE
+---------------------
+CREATE TABLE [dbo].[destek](
+	[destekID] [int] NOT NULL PRIMARY KEY,
+	[destekIsım] [nchar](30) NOT NULL,
+	[destekMıktar] [float] NOT NULL
+)
+INSERT INTO [dbo].[destek]([destekID],[destekIsım],[destekMıktar]  )
+VALUES(1,'Eren',3)
+go
+INSERT INTO [dbo].[destek]([destekID],[destekIsım],[destekMıktar]  )
+VALUES(2,'Mehmet',3)
+go
+INSERT INTO [dbo].[destek]([destekID],[destekIsım],[destekMıktar]  )
+VALUES(3,'Zehra',0.5)
+go
+INSERT INTO [dbo].[destek]([destekID],[destekIsım],[destekMıktar]  )
+VALUES(4,'Berke',11.78)
+go
+
+
+
+---------------------
+--SİTEDEKİ KOD BLOGLARININ TUTULDUĞU TABLE, ÖRNEK(BUBBLESORT ALGORİTMASI, ASAL SAYI HESAPLAYICI)
+---------------------
+CREATE TABLE [dbo].[kodlar](
+	[kodID] [int] PRIMARY KEY NOT NULL,
+	[kod] [nchar](4000) NOT NULL, --KODUN KENDİSİ, TXT HALİNDE
+	[yazar] [int] NOT NULL,	--KODUN SAHİBİ
+	[dil] [nchar](10) NOT NULL,--DİL C#
+	[tarih] [datetime] NOT NULL
+	FOREIGN KEY (yazar) REFERENCES [dbo].[Hakkinda]([yazarID]),
+	)
+
+INSERT INTO [dbo].[kodlar]([kodID],[kod],[yazar],[dil],[tarih]  )
+VALUES(1,'"Bubblesort Algorithms codes........"',1,'C',14-11-2022)
+go
+INSERT INTO [dbo].[kodlar]([kodID],[kod],[yazar],[dil],[tarih]  )
+VALUES(2,'"Microsoft sql de trigger ekleme örnekleri........"',2,'MsSql',2022/11/11)
+go
+INSERT INTO [dbo].[kodlar]([kodID],[kod],[yazar],[dil],[tarih]  )
+VALUES(3,'"Phyton reverse integer algoritması........"',1,'Phyton',2019/11/11)
+go
+
+
+
+
+
+
+	-------------------------------------
+	-------------------------------------
+	-------------------------------------
+	--stored proc---------------
+	-------------------------------------
+	-------------------------------------
+
+
+	--REKLAM EKLEMEK İÇİN PROCEDURE
+go
+	CREATE PROCEDURE REKLAM_EKLE
+@reklamID int,
+@sirket nchar(20),
+@gosterim_suresi int,
+@site_konum nchar(10)
+AS
+INSERT INTO [dbo].[reklam] ([reklamID] ,[sirket] ,[gosterim_suresi] ,[site_konum] )
+VALUES(@reklamID,@sirket,@gosterim_suresi,@site_konum)
+go
+
+
+
+-- POST SİLMEK İÇİN PROCEDURE
+CREATE PROCEDURE post_sil
+@id int
+AS
+DELETE FROM [dbo].[Post] WHERE MakaleID=@id
+go
+
+
+
+--YAZARIN FOTOĞRAFINI GÜNCELLEMEK İÇİN PROCEDURE
+go
+CREATE PROCEDURE foto_guncelle
+@yid int,
+@path nchar(250)
+AS
+UPDATE [dbo].[Hakkinda] SET Fotograf_path=@path
+WHERE [dbo].[Hakkinda].yazarID=@yid
+go
+
+
+go
+CREATE PROCEDURE kategori_ara
+@aranacak_kategori nvarchar(20)
+AS
+SELECT * FROM [dbo].[Kategori]  WHERE [KategoriAdi]  LIKE '%'+@aranacak_kategori+'%'
+go
+
+GO
+CREATE PROCEDURE bir_uyenin_tum_yorumlari
+@uye_yorum nvarchar(30)
+AS
+SELECT * FROM [dbo].[Yorum] WHERE YazarAdi = @uye_yorum
+GO
+
+go
+CREATE PROCEDURE onbinden_fazla_goruntulen_postlar
+as
+select [MakaleID] from [dbo].[Post]
+where [Goruntulenme] > 10000
+go
+
+go
+CREATE PROCEDURE yapilan_en_buyuk_bagis
+as
+select max([destekMıktar])
+from [dbo].[destek]
+group by [destekIsım],[destekMıktar] 
+go
+
+
+
+CREATE PROCEDURE son_ayin_postlari
+as
+select [Baslik]
+from [dbo].[Post]
+where ( GETDATE() - [Tarih] <30)
+
+go
+CREATE PROCEDURE kategoriye_gore_post_ara
+@aranacak_kategori nchar(30)
+as
+select [Baslik],[KategoriAdi]
+from [dbo].[Post]
+inner join [dbo].[Kategori] on [dbo].[Post].[KategoriID]=[dbo].[Kategori].[KategoriID]
+where KategoriAdi = @aranacak_kategori
+go
+
+
+
+go
+	CREATE PROCEDURE admin_ekle
+@aid int,
+@asif nchar(20),
+@amail nchar(20)
+as
+INSERT INTO [dbo].[admin] (adminID ,sifre ,admin_mail)
+VALUES(@aid,@asif,@amail)
+go
+
+
+
+
+
+
+
+
+
+
+go
+CREATE VIEW yazarlari_goster
+as
+SELECT [yazar_isim],[info]
+FROM [dbo].[Hakkinda]
+go
+
+go
+CREATE VIEW ortalama_bagis
+as
+SELECT avg([destekMıktar]) as ort FROM dbo.destek
+go
+
+
+create view yazarlarin_sosyal_medya_hesaplari
+as
+select [facebook],[instagram],[twitter],[linkedin]
+from [dbo].[sosyalMedya]
+go
+go
+create view bir_kullanicinin_yorumuna_gelen_en_cok_begeni
+as
+select [YazarAdi],max([YorumLike]) as max
+from [dbo].[Yorum]
+group by [YazarAdi]
+go
+
+go
+create view en_begenilen_yorum
+as
+select [YazarAdi],[YorumLike],[YorumPost]
+from [dbo].[Yorum] s
+JOIN (SELECT MAX([YorumLike]) AS id FROM [dbo].[Yorum] GROUP BY [YazarAdi]) max
+      ON s.[YorumLike] = max.id
+go
+
+create view kategori_basina_ortalama_post_sayisi
+as
+select (
+(select count([dbo].[Post].MakaleID) as toplam from [dbo].[Post])  / (select count([dbo].[Kategori].KategoriID) as toplam2 from [dbo].[Kategori])
+) as sonuc
+
+go
+
+go
+create view en_uzun_gosterilen_reklam_suresi
+as
+select max([gosterim_suresi]) as maxs from [dbo].[reklam]
+go
+
+
+go
+create view dil_sayisi
+as
+select count([dil]) as toplam
+from [dbo].[kodlar]
+go
+
+
+GO
+CREATE VIEW son_ayin_yorumlari
+as
+select [YorumPost]
+from [dbo].Yorum
+where ( GETDATE() - [Tarih] <30)
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create trigger admin_listele on [dbo].[admin]
+after insert
+as
+begin
+select * from [dbo].[admin]
+end
+ 
+
+ GO
+Create trigger reklam_uyari on [dbo].[reklam]
+for insert
+As
+if(exists(Select * from inserted where [gosterim_suresi]<1))
+Begin
+  raiserror('1 GUNDEN ASAGİ REKLAM ALINAMAZ',1,1)
+  rollback transaction
+End
+ GO
+
+ go
+ Create trigger root_admin_silme_engelleme on [dbo].[admin]
+after delete
+as
+begin
+   if(exists(select * from deleted where [adminID]=0 and [admin_mail]='root@admin.com'))
+    begin
+     raiserror('ROOT ADMIN SILINEMEZ',0,0)
+     rollback transaction
+    end
+end
+go
+ 
+ 
+create table silinen_kod(sil_kod nchar(4000),dil varchar(10))
+go
+create trigger silinen_kodlar on[dbo].[kodlar]
+after delete
+as begin
+insert into silinen_kod select kod,dil from deleted
+end
+
+go
+
+--insert [dbo].[kodlar] values(23,'a',1,'a','09.12.1998')
+--delete from dbo.kodlar where [kodID] = 23
+--select * from silinen_kod
+
+
+create trigger toplam_bagis on [dbo].[destek]
+after insert
+as begin
+select (select sum([destekMıktar]) from [dbo].[destek]) as sonuc
+end
+
+--insert [dbo].[destek] values (32,'a',3)
+
+
+go
+Create function destekcinin_bagisi(@destek_isim nchar(30))
+returns float
+as
+Begin
+return (select [destekMıktar] from [dbo].[destek] where @destek_isim=[destekIsım])
+End
+go
+
+
+
+
+go
+CREATE function yorumda_ara(@ara nvarchar(50))
+returns table
+as
+return select * from [dbo].Yorum where [YorumPost] like '%' + @ara + '%'
+ go
+
+ 
+
+go
+create function x_yasin_altindaki_yazarlar(@yy int)
+returns table
+as
+return select * from [dbo].[Hakkinda] where [yas] < @yy
+go
+
